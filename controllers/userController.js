@@ -46,17 +46,16 @@ const userController = {
       })
       .catch(err => res.status(400).json(err));
   },
-    deleteUser({ params }, res) {
-      // delete the user
-      User.findOneAndDelete({ _id: params._id })
-      .then(userData => {
-          if (!userData) {
-              res.status(404).json({ message: 'No user found with this id'});
-              return;
-          }
-      })
-      .catch(err => res.status(400).json(err));
-  },
+  deleteUser(req, res) {
+    User.findOneAndDelete({ _id: req.params.id})
+    .then((userData) => {
+        if (!userData) {
+            res.status(404).json({ message: 'No user with that ID'})
+        }
+  })
+    .catch((err) => res.status(500).json(err));
+}
+
 
 };
 
