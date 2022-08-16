@@ -54,9 +54,22 @@ const userController = {
         }
   })
     .catch((err) => res.status(500).json(err));
+},
+createFriend({ params }, res) {
+    // add friendId to userId's friend list
+    User.findOneAndUpdate(
+        { _id: params.id },
+        { $addToSet: {friends: params.id }},
+        { new: true, runValidators: true })
+    .then(userData => {
+        if (!userData) {
+            res.status(404).json({ message: 'No user found with this userId' });
+            return;
+        }
+    })
+
+
+},
 }
-
-
-};
 
 module.exports = userController;
