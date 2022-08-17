@@ -67,8 +67,20 @@ createFriend({ params }, res) {
             return;
         }
     })
-
-
+},
+deleteFriend({ params }, res) {
+    // remove friendId from userId's friend list
+    User.findOneAndDelete(
+        { _id: params.id },
+        { $pull: { friends: params.id } },
+        { new: true, runValidators: true }
+    )
+    .then(userData => {
+        if (!userData) {
+            res.status(404).json({ message: 'No user found with this userId' });
+            return;
+        }
+    })
 },
 }
 
